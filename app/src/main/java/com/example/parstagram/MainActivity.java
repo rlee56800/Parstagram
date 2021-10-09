@@ -23,6 +23,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.FileProvider;
 
+import com.example.parstagram.ui.login.LoginActivity;
 import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseFile;
@@ -41,6 +42,7 @@ public class MainActivity extends AppCompatActivity {
     private Button btnCaptureImage;
     private ImageView ivPostImage;
     private Button btnSubmit;
+    private Button btnLogout;
     private File photoFile;
     public String photoFileName = "photo.jpg";
 
@@ -53,6 +55,7 @@ public class MainActivity extends AppCompatActivity {
         btnCaptureImage = findViewById(R.id.btnCaptureImage);
         ivPostImage = findViewById(R.id.ivPostImage);
         btnSubmit = findViewById(R.id.btnSubmit);
+        btnLogout = findViewById(R.id.btnLogout);
 
         btnCaptureImage.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -77,6 +80,16 @@ public class MainActivity extends AppCompatActivity {
                 }
                 ParseUser currentUser = ParseUser.getCurrentUser();
                 savePost(description, currentUser, photoFile);
+            }
+        });
+
+        btnLogout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                ParseUser.logOut();
+                ParseUser currentUser = ParseUser.getCurrentUser(); // this will now be null
+                Toast.makeText(MainActivity.this, "Successfully logged out", Toast.LENGTH_SHORT).show();
+                goLoginActivity();
             }
         });
     }
@@ -168,5 +181,11 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         });
+    }
+
+    private void goLoginActivity() {
+        Intent i = new Intent(this, LoginActivity.class);
+        startActivity(i);
+        finish();
     }
 }

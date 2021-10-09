@@ -32,6 +32,11 @@
         android:layout_height="wrap_content"
         android:text="Submit" />
 
+    <Button
+        android:id="@+id/btnLogout"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:text="Log out" />
 
 
 </LinearLayout>

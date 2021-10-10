@@ -47,6 +47,10 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
+        if(ParseUser.getCurrentUser() != null) {
+            goMainActivity();
+        }
+
         etUsername = findViewById(R.id.etUsername);
         etPassword = findViewById(R.id.etPassword);
         btnLogin = findViewById(R.id.btnLogin);
@@ -57,7 +61,22 @@ public class LoginActivity extends AppCompatActivity {
                 String username = etUsername.getText().toString();
                 String password = etPassword.getText().toString();
                 loginUser(username, password);
+
+                // HERE
+                ParseUser.logInInBackground(username, password, new LogInCallback() {
+                    public void done(ParseUser user, ParseException e) {
+                        if (user != null) {
+                            // Hooray! The user is logged in.
+                            Log.i(TAG, "Persistence good");
+                        } else {
+                            // Signup failed. Look at the ParseException to see what happened.
+                            Log.e(TAG, "Issue with persistence", e);
+                            Toast.makeText(LoginActivity.this, "Issue with persistence", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
             }
+
         });
         btnSignUp = findViewById(R.id.btnSignUp);
         btnSignUp.setOnClickListener(new View.OnClickListener() {
